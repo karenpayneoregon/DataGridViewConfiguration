@@ -1,1 +1,1 @@
-TechNet article source code.
+TechNet article source code for configuring DataGridView columns
