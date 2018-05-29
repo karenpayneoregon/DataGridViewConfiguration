@@ -60,7 +60,7 @@ Public Class Form1
 
     End Sub
     ''' <summary>
-    ''' https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-freeze-columns-in-the-windows-forms-datagridview-control
+    ''' Freeze current column in the DataGridView
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
