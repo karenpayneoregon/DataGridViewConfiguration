@@ -6,6 +6,7 @@ Public Class frmDisplayColumns
     Private _bsColumns As New BindingSource
     Private _gridView As DataGridView
     Private _dOperations As New DataGridViewConfiguration
+    Private _hasFrozenColumns As Boolean
 
     ''' <summary>
     ''' Read in column properties if configuration file exists.
@@ -16,6 +17,8 @@ Public Class frmDisplayColumns
         InitializeComponent()
 
         _gridView = dgv
+
+        _hasFrozenColumns = _gridView.Columns.Cast(Of DataGridViewColumn).Any(Function(col) col.Frozen)
 
         Text = String.Concat("Columns for ", _gridView.Parent.Name, ".", _gridView.Name)
         _dOperations = New DataGridViewConfiguration(dgv, pFileName)
@@ -39,6 +42,18 @@ Public Class frmDisplayColumns
         DataGridView1.Columns("ColumnName").ReadOnly = True
         DataGridView1.Columns("DisplayIndex").Visible = False
 
+        If _hasFrozenColumns Then
+
+            If My.Dialogs.Question("Can not reorder columns with frozen columns, would you like unfreeze the columns?") Then
+                For colIndex As Integer = 0 To _dOperations.DataGridView.Columns.Count - 1
+                    _dOperations.DataGridView.Columns(colIndex).Frozen = False
+                Next
+            Else
+                cmdApply.Enabled = False
+                cmdSetAllVisible.Enabled = False
+            End If
+
+        End If
     End Sub
     ''' <summary>
     ''' Apply settings to DataGridView which was passed in
@@ -47,6 +62,9 @@ Public Class frmDisplayColumns
     ''' <param name="e"></param>
     Private Sub cmdApply_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles cmdApply.Click
         _dOperations.Save(_gridView)
+        If _dOperations.HasException Then
+            MessageBox.Show((_dOperations.LastExceptionMessage))
+        End If
     End Sub
     ''' <summary>
     ''' Set all columns visible = true

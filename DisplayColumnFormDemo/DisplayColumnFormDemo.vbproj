@@ -71,6 +71,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomNamespace\MyDialogs.vb" />
     <Compile Include="DisplayColumns.designer.vb">
       <DependentUpon>DisplayColumns.vb</DependentUpon>
     </Compile>
